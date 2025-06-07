@@ -1,4 +1,4 @@
-import { CheckoutPaymentIntent, OrderRequest } from "@paypal/paypal-server-sdk";
+import { CheckoutPaymentIntent } from "@paypal/paypal-server-sdk";
 
 export const clientCartExample = {
   body: {
