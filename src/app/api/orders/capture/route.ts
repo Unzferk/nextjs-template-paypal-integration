@@ -30,17 +30,13 @@ const captureOrder = async (orderID: any) => {
 export async function POST(request: NextRequest) {
   try {
     const { orderID } = await request.json();
+
     if (!orderID) {
       throw new Error("orderID has not being provided");
     }
-    //const orderCaptureResponse = await captureOrder(orderID);
+
     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
 
-    // console.log("orderCaptureResponse: ", JSON.stringify(orderCaptureResponse));
-    // console.log(
-    //   "STATUS: ",
-    //   JSON.stringify(orderCaptureResponse?.httpStatusCode)
-    // );
     if (httpStatusCode !== 201) {
       throw new Error(
         "something happes capturing your order, status: " + httpStatusCode

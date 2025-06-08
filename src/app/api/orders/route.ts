@@ -1,24 +1,15 @@
-//import { ordersController } from "@/app/config/paypal.config";
 import {
   ApiError,
-  //CheckoutPaymentIntent,
   Client,
   Environment,
   LogLevel,
-  //OrderRequest,
-  //OrderRequest,
   OrdersController,
   PaymentsController,
 } from "@paypal/paypal-server-sdk";
 import { NextResponse, NextRequest } from "next/server";
 
-const {
-  PAYPAL_CLIENT_ID,
-  PAYPAL_CLIENT_SECRET,
-  //PORT = 8080,
-} = process.env;
-//console.log("ID: " + PAYPAL_CLIENT_ID);
-//console.log("SEXRET: " + PAYPAL_CLIENT_SECRET);
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
+
 const client = new Client({
   clientCredentialsAuthCredentials: {
     oAuthClientId: PAYPAL_CLIENT_ID || "",
@@ -50,7 +41,7 @@ const createOrder = async (cart: any) => {
       );
     }
     return {
-      jsonResponse: JSON.parse(body),
+      response: JSON.parse(String(body)),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
@@ -70,10 +61,9 @@ export async function POST(request: NextRequest) {
     if (!cart) {
       throw new Error("your cart is emtpy");
     }
-    console.log("MYCART: ", JSON.stringify(cart));
-    const { jsonResponse, httpStatusCode } = await createOrder(cart);
-    //console.log("ORDER RESPONSE", JSON.stringify(jsonResponse));
-    return NextResponse.json(jsonResponse);
+
+    const { response } = await createOrder(cart);
+    return NextResponse.json(response);
   } catch (error) {
     console.error("ERROR - Failed to create order:", error);
     return NextResponse.json({ error });
